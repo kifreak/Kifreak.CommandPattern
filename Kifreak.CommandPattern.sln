@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kifreak.CommandPattern", "Kifreak.CommandPattern\Kifreak.CommandPattern.csproj", "{8542BDBC-2023-46FA-8712-B9EA41712F14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kifreak.CommandPattern.Console", "Kifreak.CommandPattern.Console\Kifreak.CommandPattern.Console.csproj", "{4E2DA028-5D81-43E9-A931-04AF9C80B392}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8542BDBC-2023-46FA-8712-B9EA41712F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8542BDBC-2023-46FA-8712-B9EA41712F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8542BDBC-2023-46FA-8712-B9EA41712F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8542BDBC-2023-46FA-8712-B9EA41712F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E2DA028-5D81-43E9-A931-04AF9C80B392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E2DA028-5D81-43E9-A931-04AF9C80B392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E2DA028-5D81-43E9-A931-04AF9C80B392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E2DA028-5D81-43E9-A931-04AF9C80B392}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9367C0CB-272C-4FC0-99D8-86066B1DFD58}
+	EndGlobalSection
+EndGlobal
