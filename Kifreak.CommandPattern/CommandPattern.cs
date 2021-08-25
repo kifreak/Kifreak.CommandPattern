@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Kifreak.CommandPattern.Commands;
-using Kifreak.CommandPattern.Configuration;
 using Kifreak.CommandPattern.Helpers;
 using Kifreak.CommandPattern.Interfaces;
 
@@ -27,7 +26,7 @@ namespace Kifreak.CommandPattern
 
             if (args.Length == 0)
             {
-                var helpCommand = Config.Get<HelpCommand>();
+                var helpCommand = new HelpCommand();
                 await helpCommand.Execute();
                 return;
             }

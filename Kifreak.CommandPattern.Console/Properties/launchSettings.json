@@ -2,7 +2,7 @@
   "profiles": {
     "Kifreak.CommandPattern.Console": {
       "commandName": "Project",
-      "commandLineArgs": "helloworld MyName -t 15 --male"
+      "commandLineArgs": "help helloworld"
     }
   }
 }

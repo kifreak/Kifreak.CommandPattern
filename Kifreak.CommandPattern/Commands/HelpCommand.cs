@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Configuration;
 using Kifreak.CommandPattern.Helpers;
 using Kifreak.CommandPattern.Interfaces;
@@ -13,6 +14,7 @@ namespace Kifreak.CommandPattern.Commands
     {
         #region ICommand
 
+        [Main(description: "Write the command you need help with.")]
         public string Topic { get; set; }
 
         public override Task Execute()
@@ -87,8 +89,8 @@ namespace Kifreak.CommandPattern.Commands
         public override string CommandName => "Help";
         public override string Description => "Show this help page.";
 
-        public override Dictionary<string, string> OptionsDescription => new Dictionary<string, string>
-            { {"Command", "Write the command you need help with."}};
+        //public override Dictionary<string, string> OptionsDescription => new Dictionary<string, string>
+        //    { {"Command", "Write the command you need help with."}};
 
         public override ICommand MakeCommand(Argument argument)
         {

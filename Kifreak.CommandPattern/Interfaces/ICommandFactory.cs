@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Kifreak.CommandPattern.Models;
 
 namespace Kifreak.CommandPattern.Interfaces

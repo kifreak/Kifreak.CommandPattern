@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
+using System.Reflection;
+using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Commands;
 using Kifreak.CommandPattern.Configuration;
 using Kifreak.CommandPattern.Interfaces;
@@ -11,63 +12,21 @@ namespace Kifreak.CommandPattern.Helpers
 {
     public static class CommandParser
     {
-              
-        public static string GetFirstParameter(string[] arguments)
+        internal static Dictionary<PropertyInfo, BaseAttribute> GetBaseAttributes(ICommand command)
         {
-            return GetParameters(arguments, 1, 1).FirstOrDefault();
-        }
-        public static string[] GetParameters(string[] arguments, int minimum)
-        {
-            return GetParameters(arguments, 1, minimum);
-        }
-        public static string[] GetParameters(string[] arguments, int skip, int minimum)
-        {
-            if (arguments.Length < minimum)
-            {
-                return null;
-            }
-            string[] toLabels = new string[arguments.Length - skip];
-            var iteration = 0;
-            for (var i = skip; i < arguments.Length; i++)
-            {
-                toLabels[iteration] = arguments[i];
-                iteration++;
-            }
+            return command
+                .GetType()
+                .GetProperties()
+                .Select(property =>
+                    new KeyValuePair<PropertyInfo, BaseAttribute>(property,
+                        property.GetCustomAttributes()
+                            .FirstOrDefault(attr => attr is BaseAttribute) 
+                            as BaseAttribute
+                    ))
+                .Where(pair => pair.Value != null)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
 
-            return toLabels;
-        }
 
-        public static bool HasOptionalParameter(string shortCommand, string longCommand, string[] arguments)
-        {
-            KeyValuePair<int, string> envString = arguments.Select((value, key) => new KeyValuePair<int, string>(key, value)).FirstOrDefault(pair =>
-                pair.Value == "-" + shortCommand || pair.Value.Equals("--" + longCommand, StringComparison.CurrentCultureIgnoreCase));
-            return envString.Value != null;
-        }
-        public static string GetOptionalParameter(string shortCommand, string longCommand, string[] arguments, string defaultValue)
-        {
-            KeyValuePair<int, string> envString = arguments.Select((value, key) => new KeyValuePair<int, string>(key, value)).FirstOrDefault(pair =>
-                pair.Value == "-" + shortCommand || pair.Value.Equals("--" + longCommand, StringComparison.CurrentCultureIgnoreCase));
-            if (envString.Value == null)
-            {
-                return defaultValue;
-            }
-            if (arguments.Length <= envString.Key + 1)
-            {
-                ConsoleHelper.Error($"After a -{shortCommand} or --{longCommand} you have to define a valid {longCommand}");
-                if (!string.IsNullOrEmpty(defaultValue))
-                {
-                    ConsoleHelper.Error($"For {longCommand} selecting default value: {defaultValue}");
-                }
-
-                return string.Empty;
-            }
-            string argsValue = arguments[envString.Key + 1];
-            if (!string.IsNullOrEmpty(argsValue))
-            {
-                return argsValue;
-            }
-
-            return string.Empty;
         }
         internal static ICommand ParseCommand(string[] args)
         {
@@ -78,7 +37,7 @@ namespace Kifreak.CommandPattern.Helpers
                 return notFoundCommand;
             }
 
-            return command.MakeCommand(new Argument {Arguments = args});
+            return command.MakeCommand(new Argument(args));
         }
         
         private static ICommandFactory FindRequestCommand(string commandName)

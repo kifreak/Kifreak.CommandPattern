@@ -1,82 +1,66 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Commands;
 using Kifreak.CommandPattern.Helpers;
-using Kifreak.CommandPattern.Interfaces;
-using Kifreak.CommandPattern.Models;
 
 namespace Kifreak.CommandPattern.Console
 {
-    public enum EGender{
-        Female, Male, NotDefined
-    }
-    public class TestCommand: BaseCommand
+    public class TestCommand : BaseCommand
     {
-        private readonly string _name;
-        private readonly string _tall;
-        private readonly EGender _gender;
+        [Main("You're name")] 
+        public string Name { get; set; }
+        [Optional("t", "tall", "Your tall")]
+        public string Tall { get; set; }
 
-        public TestCommand()
-        {
+        [OptionalNoValue("m", "male", "Select if you are a male")]
+        public bool IsMale { get; set; }
+        [OptionalNoValue("f","female", "Select if your are a female")]
+        public bool IsFemale { get; set; }
 
-        }
-
-        public TestCommand(string name, string tall, EGender gender)
-        {
-            _name = name;
-            _tall = tall;
-            _gender = gender;
+        public EGender Gender {
+            get
+            {
+                if (IsMale && IsFemale)
+                {
+                    return EGender.NotDefined;
+                }
+                else if (IsMale)
+                {
+                    return EGender.Male;
+                }
+                else
+                {
+                    return EGender.Female;
+                }
+            }
         }
         public override Task Execute()
         {
-            ConsoleHelper.WriteLineDarkYellow($"Hello World!! Thanks to you, {_name}.");
-            if (!string.IsNullOrEmpty(_tall))
+            ConsoleHelper.WriteLineDarkYellow($"Hello World!! Thanks to you, {Name}.");
+            if (!string.IsNullOrEmpty(Tall))
             {
-                ConsoleHelper.WriteLineDarkYellow($"You're so {_tall} tall");
+                ConsoleHelper.WriteLineDarkYellow($"You're so {Tall} tall");
             }
 
-            if (_gender == EGender.NotDefined)
+            if (Gender == EGender.NotDefined)
             {
                 ConsoleHelper.WriteLineDarkYellow("You're decided not to share you're gender");
             }
             else
             {
-                ConsoleHelper.WriteLineDarkYellow($"You're {_gender}");
+                ConsoleHelper.WriteLineDarkYellow($"You're {Gender}");
             }
             return Task.CompletedTask;
         }
 
         public override bool Validate()
         {
-            return !string.IsNullOrEmpty(_name);
+            return !string.IsNullOrEmpty(Name);
         }
 
 
         public override string CommandName => "HelloWorld";
         public override string Description => "Say hello to the world";
-
-        public override Dictionary<string, string> OptionsDescription => new Dictionary<string, string>
-        {
-            {"name", "Your name"},
-            { "-t/--tall", "Your tall"},
-            {"-m/--male", "You're a male"},
-            {"-f/--female", "You're a female"}
-        };
-        //TODO: DEFINED A ARGUMENTS CLASS WHERE WE ADDD COMMANDPARSER FUNCTIONS
-        public override ICommand MakeCommand(Argument argument)
-        {
-            bool isMale = CommandParser.HasOptionalParameter("m", "male", argument.Arguments);
-            bool isFemale = CommandParser.HasOptionalParameter("f", "female", argument.Arguments);
-            EGender gender = EGender.Female;
-            if ((isMale && isFemale) || (!isMale && !isFemale))
-            {
-                gender = EGender.NotDefined;
-            } else if (isMale)
-            {
-                gender = EGender.Male;
-            }
-            //CommandParser.GetFirstParameter(arguments) same CommandParser.GetParameters(arguments, 1)
-            return new TestCommand(CommandParser.GetFirstParameter(argument.Arguments), CommandParser.GetOptionalParameter("t","tall", argument.Arguments, null), gender);
-        }
+        
     }
 }

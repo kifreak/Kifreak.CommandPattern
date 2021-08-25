@@ -19,8 +19,7 @@ namespace Kifreak.CommandPattern.Helpers
 
         public static void EndProgram()
         {
-            WriteLineDarkGreen("Program finish. Press any key to close this window.");
-            Console.ReadKey();
+            WriteLineDarkGreen("Program finish.");
         }
 
         public static void WriteLineDarkYellow(string message)
