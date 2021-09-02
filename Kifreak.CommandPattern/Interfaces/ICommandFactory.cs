@@ -7,9 +7,6 @@ namespace Kifreak.CommandPattern.Interfaces
     {
         string CommandName { get; }
         string Description { get; }
-
-        Dictionary<string, string> OptionsDescription { get; }
-
         ICommand MakeCommand(Argument argument);
     }
 }

@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kifreak.CommandPattern", "K
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kifreak.CommandPattern.Console", "Kifreak.CommandPattern.Console\Kifreak.CommandPattern.Console.csproj", "{4E2DA028-5D81-43E9-A931-04AF9C80B392}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kifreak.CommandPattern.UnitTests", "Kifreak.CommandPattern.UnitTests\Kifreak.CommandPattern.UnitTests.csproj", "{BCE9D76F-3ED9-4E2E-9A71-E98C712013E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kifreak.CommandPattern.UnitTests", "Kifreak.CommandPattern.UnitTests\Kifreak.CommandPattern.UnitTests.csproj", "{BCE9D76F-3ED9-4E2E-9A71-E98C712013E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E71731A3-8C0B-4647-9F22-957434BC23EB}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

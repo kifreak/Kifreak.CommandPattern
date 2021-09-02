@@ -62,19 +62,8 @@ namespace Kifreak.CommandPattern.Commands
             ConsoleHelper.WriteDarkYellow($"{command.CommandName}: ");
             Console.WriteLine(command.Description);
             ConsoleHelper.WriteLineDarkBlue("Arguments:");
-            if (command.OptionsDescription == null || command.OptionsDescription.Count == 0)
-            {
-                ConsoleHelper.WriteLineDarkBlue("This command doesn't have parameters");
-            }
-            else
-            {
-
-                foreach (var option in command.OptionsDescription)
-                {
-                    ConsoleHelper.WriteDarkYellow($"{option.Key}: ");
-                    System.Console.WriteLine(option.Value);
-                }
-            }
+            throw new NotImplementedException();
+            
         }
 
         public override bool Validate()

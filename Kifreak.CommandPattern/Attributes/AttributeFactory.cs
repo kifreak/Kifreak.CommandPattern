@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Kifreak.CommandPattern.Models;
@@ -17,7 +18,14 @@ namespace Kifreak.CommandPattern.Attributes
                 .Where(pair => pair.Value != null);
             foreach (KeyValuePair<PropertyInfo, BaseAttribute> keyValuePair in customProperties)
             {
-                keyValuePair.Value.SetAttribute(parsedObject, argument, keyValuePair.Key);
+                try
+                {
+                    keyValuePair.Value.SetAttribute(parsedObject, argument, keyValuePair.Key);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Failing setting attribute to {keyValuePair.Key.Name}. Check if the attribute is public or has a setter");
+                }
             }
         }
     }
