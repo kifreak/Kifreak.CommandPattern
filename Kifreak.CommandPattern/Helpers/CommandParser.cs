@@ -28,7 +28,7 @@ namespace Kifreak.CommandPattern.Helpers
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
 
-        }
+            }
         internal static ICommand ParseCommand(string[] args, IOutput output)
         {
             Argument argument = new Argument(args);

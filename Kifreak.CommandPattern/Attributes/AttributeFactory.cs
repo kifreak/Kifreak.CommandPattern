@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Kifreak.CommandPattern.Exceptions;
 using Kifreak.CommandPattern.Models;
 
 namespace Kifreak.CommandPattern.Attributes
@@ -22,9 +23,9 @@ namespace Kifreak.CommandPattern.Attributes
                 {
                     keyValuePair.Value.SetAttribute(parsedObject, argument, keyValuePair.Key);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    throw new Exception($"Failing setting attribute to {keyValuePair.Key.Name}. Check if the attribute is public or has a setter");
+                    throw new AttributeNotFoundException(keyValuePair.Key.Name);
                 }
             }
         }
