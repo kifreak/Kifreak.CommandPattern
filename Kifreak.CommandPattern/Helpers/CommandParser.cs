@@ -7,6 +7,7 @@ using Kifreak.CommandPattern.Commands;
 using Kifreak.CommandPattern.Configuration;
 using Kifreak.CommandPattern.Interfaces;
 using Kifreak.CommandPattern.Models;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern.Helpers
 {
@@ -28,21 +29,22 @@ namespace Kifreak.CommandPattern.Helpers
 
 
         }
-        internal static ICommand ParseCommand(string[] args)
+        internal static ICommand ParseCommand(string[] args, IOutput output)
         {
-            ICommandFactory command = FindRequestCommand(args[0]);
+            Argument argument = new Argument(args);
+            string firstParameter = argument.GetFirstParameter();
+            ICommandFactory command = FindRequestCommand(firstParameter, output);
             if (command == null)
             {
-                NotFoundCommand notFoundCommand = new NotFoundCommand {Name = args[0]};
-                return notFoundCommand;
+                return new NotFoundCommand(output) {Name = firstParameter};
             }
 
-            return command.MakeCommand(new Argument(args));
+            return command.MakeCommand(argument);
         }
         
-        private static ICommandFactory FindRequestCommand(string commandName)
+        private static ICommandFactory FindRequestCommand(string commandName, IOutput output)
         {
-            return Config.AvailableCommands.FirstOrDefault(t => string.Equals(t.CommandName, commandName, StringComparison.CurrentCultureIgnoreCase));
+            return Config.GetAvailableCommands(output).FirstOrDefault(t => string.Equals(t.CommandName, commandName, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

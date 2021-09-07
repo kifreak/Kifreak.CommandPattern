@@ -4,16 +4,17 @@ using System.Threading.Tasks;
 using Kifreak.CommandPattern.Commands;
 using Kifreak.CommandPattern.Helpers;
 using Kifreak.CommandPattern.Interfaces;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern
 {
     public static class CommandPattern
     {
-        public static async Task Execute(string[] args)
+        public static async Task Execute(string[] args, IOutput output)
         {
-            await Execute(null, args, null);
+            await Execute(null, args, null, output);
         }
-        public static async Task Execute(Action startProgram, string[] args, Action endProgram)
+        public static async Task Execute(Action startProgram, string[] args, Action endProgram, IOutput output)
         {
             if (startProgram == null)
             {
@@ -26,12 +27,12 @@ namespace Kifreak.CommandPattern
 
             if (args.Length == 0)
             {
-                var helpCommand = new HelpCommand();
+                var helpCommand = new HelpCommand(output);
                 await helpCommand.Execute();
                 return;
             }
 
-            ICommand command = CommandParser.ParseCommand(args);
+            ICommand command = CommandParser.ParseCommand(args, output);
             if (command.Validate())
             {
                 await command.Execute();

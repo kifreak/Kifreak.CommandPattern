@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Configuration;
 using Kifreak.CommandPattern.Helpers;
 using Kifreak.CommandPattern.Interfaces;
 using Kifreak.CommandPattern.Models;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern.Commands
 {
@@ -33,36 +35,40 @@ namespace Kifreak.CommandPattern.Commands
 
         public void ShowBasicHelp()
         {
-            ConsoleHelper.JumpLine(1);
-            System.Console.WriteLine("This is a helper page.");
-            System.Console.WriteLine("If you need more information about an action. Write:");
-            ConsoleHelper.WriteLineDarkGreen("help actionName");
-            ConsoleHelper.JumpLine(1);
-            IEnumerable<ICommandFactory> availableCommands = Config.GetAvailableCommands();
+            Output.EmptyLine(1);
+            Output.Color("This is a helper page.", "White");
+            Output.Color("If you need more information about an action. Write:", "White");
+            Output.Color("help actionName", "DarkGreen");
+            Output.EmptyLine(1);
+            IEnumerable<ICommandFactory> availableCommands = Config.GetAvailableCommands(Output);
             foreach (var availableCommand in availableCommands)
             {
-                ConsoleHelper.WriteLineSeparator();
-                ConsoleHelper.WriteDarkYellow($"{availableCommand.CommandName}: ");
-                Console.WriteLine(availableCommand.Description);
+                Output.Separator();
+                Output.Info($"{availableCommand.CommandName}: ");
+                Output.Color(availableCommand.Description,"White");
             }
             ConsoleHelper.WriteLineSeparator();
         }
 
         public void ShowSpecificHelp()
         {
-            IEnumerable<ICommandFactory> availableCommands = Config.GetAvailableCommands();
+            IEnumerable<ICommandFactory> availableCommands = Config.GetAvailableCommands(Output);
             ICommandFactory command = availableCommands.FirstOrDefault(
                 t => t.CommandName.Equals(Topic, StringComparison.CurrentCultureIgnoreCase));
             if (command == null)
             {
-                ConsoleHelper.Error("The introduced command doesn't exist.");
+                Output.Error("The introduced command doesn't exist.");
                 return;
             }
-            ConsoleHelper.WriteLineSeparator();
-            ConsoleHelper.WriteDarkYellow($"{command.CommandName}: ");
-            Console.WriteLine(command.Description);
-            ConsoleHelper.WriteLineDarkBlue("Arguments:");
-            throw new NotImplementedException();
+            Output.Separator();
+            Output.Info($"{command.CommandName}: ");
+            Output.Color(command.Description, "White");
+            Output.Color("Arguments:", "DarkBlue");
+            Dictionary<PropertyInfo, BaseAttribute> attributes = CommandParser.GetBaseAttributes(command as ICommand);
+            foreach (KeyValuePair<PropertyInfo, BaseAttribute> pair in attributes)
+            {
+                Output.Color($"{pair.Key.Name} ({pair.Value.GetName()}): {pair.Value.Description}", "White");
+            }
             
         }
 
@@ -78,9 +84,6 @@ namespace Kifreak.CommandPattern.Commands
         public override string CommandName => "Help";
         public override string Description => "Show this help page.";
 
-        //public override Dictionary<string, string> OptionsDescription => new Dictionary<string, string>
-        //    { {"Command", "Write the command you need help with."}};
-
         public override ICommand MakeCommand(Argument argument)
         {
             var topic = string.Empty;
@@ -89,9 +92,13 @@ namespace Kifreak.CommandPattern.Commands
                 topic = argument.Arguments[1];
             }
 
-            return new HelpCommand {Topic = topic};
+            return new HelpCommand(Output) {Topic = topic};
         }
 
         #endregion ICommandFactory
+
+        public HelpCommand(IOutput output) : base(output)
+        {
+        }
     }
 }

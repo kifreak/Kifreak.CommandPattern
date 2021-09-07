@@ -16,5 +16,10 @@ namespace Kifreak.CommandPattern.Attributes
         {
             return argument.GetParameterByPosition(Position);
         }
+
+        public override string GetName()
+        {
+            return $"Position number {Position}";
+        }
     }
 }

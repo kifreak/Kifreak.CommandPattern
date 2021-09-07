@@ -29,5 +29,7 @@ namespace Kifreak.CommandPattern.Attributes
         }
 
         public abstract string GetValue(Argument argument);
+
+        public abstract string GetName();
     }
 }

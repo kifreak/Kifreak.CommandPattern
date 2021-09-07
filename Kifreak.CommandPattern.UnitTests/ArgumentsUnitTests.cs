@@ -1,4 +1,5 @@
 using Kifreak.CommandPattern.Models;
+using Kifreak.CommandPattern.Output;
 using Xunit;
 
 namespace Kifreak.CommandPattern.UnitTests
@@ -8,7 +9,7 @@ namespace Kifreak.CommandPattern.UnitTests
         [Fact]
         public void MainArgumentDetectorUnitTest()
         {
-            BaseTestCommand test = new BaseTestCommand();
+            BaseTestCommand test = new BaseTestCommand(new OutputConsole());
             test.MakeCommand(new Argument(new[] {"myCmd", "get", "all", "--no-devices", "-t", "testProbe"}));
             Assert.Equal("get", test.GetTypeCommand);
             Assert.Equal("all", test.GetSecondTypeCommand);

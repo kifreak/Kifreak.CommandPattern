@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern.Console
 {
@@ -6,7 +7,7 @@ namespace Kifreak.CommandPattern.Console
     {
         static async Task Main(string[] args)
         {
-            await CommandPattern.Execute(args);
+            await CommandPattern.Execute(args, new OutputConsole());
         }
     }
 }

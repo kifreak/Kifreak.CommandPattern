@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Commands;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern.UnitTests
 {
@@ -39,5 +40,9 @@ namespace Kifreak.CommandPattern.UnitTests
 
         public override string CommandName => "TestCommand";
         public override string Description => "This is a test command";
+
+        public BaseTestCommand(IOutput output) : base(output)
+        {
+        }
     }
 }

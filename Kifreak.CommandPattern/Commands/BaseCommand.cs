@@ -7,11 +7,18 @@ using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Helpers;
 using Kifreak.CommandPattern.Interfaces;
 using Kifreak.CommandPattern.Models;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern.Commands
 {
     public abstract class BaseCommand : ICommand, ICommandFactory
     {
+        protected IOutput Output { get; }
+
+        protected BaseCommand(IOutput output)
+        {
+            Output = output;
+        }
 
         private Dictionary<string, string> _optionsDescription;
         public abstract Task Execute();
@@ -24,14 +31,10 @@ namespace Kifreak.CommandPattern.Commands
         {
             get
             {
-                if (_optionsDescription == null)
-                {
-                    _optionsDescription = CommandParser.GetBaseAttributes(this).Select(pair => new
+                return _optionsDescription ??= CommandParser.GetBaseAttributes(this).Select(
+                        pair => new
                             KeyValuePair<string, string>(pair.Key.Name, pair.Value.Description))
-                        .ToDictionary(pair => pair.Key, pair => pair.Value);
-                }
-
-                return _optionsDescription;
+                    .ToDictionary(pair => pair.Key, pair => pair.Value);
             }
         }
 

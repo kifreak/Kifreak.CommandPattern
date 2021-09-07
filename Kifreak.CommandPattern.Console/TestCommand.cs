@@ -2,6 +2,7 @@
 using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Commands;
 using Kifreak.CommandPattern.Helpers;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern.Console
 {
@@ -9,7 +10,7 @@ namespace Kifreak.CommandPattern.Console
     {
         [Main("You're name")] 
         public string Name { get; set; }
-        [Optional("t", "tall", "Your tall")]
+        [Optional("t", "tall", null, "Your tall")]
         public string Tall { get; set; }
 
         [OptionalNoValue("m", "male", "Select if you are a male")]
@@ -61,6 +62,9 @@ namespace Kifreak.CommandPattern.Console
 
         public override string CommandName => "HelloWorld";
         public override string Description => "Say hello to the world";
-        
+
+        public TestCommand(IOutput output) : base(output)
+        {
+        }
     }
 }

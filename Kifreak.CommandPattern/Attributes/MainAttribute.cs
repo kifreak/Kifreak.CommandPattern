@@ -12,6 +12,11 @@ namespace Kifreak.CommandPattern.Attributes
             return argument.GetParameterByPosition(1);
         }
 
+        public override string GetName()
+        {
+            return "First Element";
+        }
+
         public MainAttribute() : this(null)
         {
 

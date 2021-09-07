@@ -4,6 +4,7 @@ using System.Linq;
 using Kifreak.CommandPattern.Assigner;
 using Kifreak.CommandPattern.Attributes;
 using Kifreak.CommandPattern.Interfaces;
+using Kifreak.CommandPattern.Output;
 
 namespace Kifreak.CommandPattern.Configuration
 {
@@ -12,7 +13,7 @@ namespace Kifreak.CommandPattern.Configuration
         private static List<ICommandFactory> _availableCommands;
         private static List<BaseAttribute> _availableAttributes;
         private static List<IAssignerValue> _assignerValues;
-        public static List<ICommandFactory> AvailableCommands => _availableCommands ?? GetAvailableCommands();
+        //public static List<ICommandFactory> AvailableCommands => _availableCommands ?? GetAvailableCommands();
 
         public static List<BaseAttribute> AvailableAttributes = _availableAttributes ?? GetAvailableAttributes();
 
@@ -31,15 +32,16 @@ namespace Kifreak.CommandPattern.Configuration
             return _availableAttributes;
         }
 
-        internal static List<ICommandFactory> GetAvailableCommands()
+        public static List<ICommandFactory> GetAvailableCommands(IOutput output)
         {
             if (_availableCommands== null ||  _availableCommands.Count == 0)
             {
                 var iCommandFactory = typeof(ICommandFactory);
+                Object[] args = { output };
                 _availableCommands = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(s => s.GetTypes())
                     .Where(p => iCommandFactory.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract)
-                    .Select(type => Activator.CreateInstance(type) as ICommandFactory).ToList();
+                    .Select(type => Activator.CreateInstance(type, args) as ICommandFactory).ToList();
             }
 
             return _availableCommands;

@@ -25,5 +25,14 @@ namespace Kifreak.CommandPattern.Attributes
         {
             return argument.GetOptionalParameter(_shortCommand, _longCommand, _defaultValue);
         }
+
+        public override string GetName()
+        {
+            string shortCommandDescription = !string.IsNullOrEmpty(_shortCommand) ? $" (-{_shortCommand})" : string.Empty;
+            string defaultCommandDescription = !string.IsNullOrEmpty(_defaultValue)
+                ? $". Default value: {_defaultValue}"
+                : string.Empty;
+            return $"{_longCommand}{shortCommandDescription}{defaultCommandDescription}";
+        }
     }
 }
